@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+        default-autowire="byName" default-lazy-init="false">
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="sqlSessionFactory" class="javacommon.SqlSessionFactoryFactoryBean">
+        <property name="configLocation" value="classpath:configuration.xml"/>
+        <property name="mapperLocations" value="classpath*:/mapper/**/*Mapper.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    
+    <!-- Transaction manager for a single JDBC DataSource -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+		    <tx:method name="repricePostRed" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="retailPost" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="saveLog" propagation="NOT_SUPPORTED"/>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="execute*" propagation="REQUIRED" />
+			<tx:method name="next*" propagation="REQUIRED" />
+			<tx:method name="start*" propagation="REQUIRED" />
+			<tx:method name="end*" propagation="REQUIRED" />
+			<tx:method name="append*" propagation="REQUIRED" />
+			<tx:method name="incr*" propagation="REQUIRED" />
+			<tx:method name="upload*" propagation="REQUIRED" />
+			<tx:method name="batch*" propagation="REQUIRED" />
+			<tx:method name="free*" propagation="REQUIRED" />
+			<tx:method name="bind*" propagation="REQUIRED" />
+			<tx:method name="change*" propagation="REQUIRED" />
+			<tx:method name="is*" propagation="REQUIRED" />
+			<tx:method name="can*" propagation="REQUIRED" />
+			<tx:method name="check*" propagation="REQUIRED" />
+			<tx:method name="rec*" propagation="REQUIRED" />
+			<tx:method name="ass*" propagation="REQUIRED" />
+			<tx:method name="cw*" propagation="REQUIRED" />
+			<tx:method name="cashier*" propagation="REQUIRED" />
+			<tx:method name="ster*" propagation="REQUIRED" />
+			<tx:method name="balance*" propagation="REQUIRED" />
+			<tx:method name="validate*" propagation="REQUIRED" />
+			<tx:method name="auto*" propagation="REQUIRED" />
+			<tx:method name="settle*" propagation="REQUIRED" />
+			<tx:method name="select*" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config expose-proxy="true">
+		<aop:pointcut id="txPointcut"
+			expression="execution(* com.zx.soft.service..*.*(..))" />
+		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice" />
+	</aop:config>
+
+
+    <!-- component-scan自动搜索@Component , @Controller , @Service , @Repository等标注的类 -->
+	<context:component-scan base-package="com.**.dao"/>
+	
+      <!-- spring thread pool executor -->           
+     <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+          <!-- 线程池维护线程的最少数量 -->
+          <property name="corePoolSize" value="5" />
+          <!-- 允许的空闲时间 -->
+          <property name="keepAliveSeconds" value="200" />
+          <!-- 线程池维护线程的最大数量 -->
+          <property name="maxPoolSize" value="10" />
+          <!-- 缓存队列 -->
+         <property name="queueCapacity" value="20" />
+         <!-- 对拒绝task的处理策略 -->
+         <property name="rejectedExecutionHandler">
+             <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+         </property>
+     </bean>
+</beans>

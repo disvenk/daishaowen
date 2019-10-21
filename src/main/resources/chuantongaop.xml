@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--目标类-->
+    <bean id="orderService" class="com.daishaowen.test.aop.chuantongaop.OrderServiceImpl"></bean>
+
+    <!--通知advice-->
+    <bean id="orderServiceAdvice" class="com.daishaowen.test.aop.chuantongaop.OrderHelper"></bean>
+
+    <!--定义切点-->
+    <bean id="orderServicePointCut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+        <property name="mappedNames">
+            <list>
+                <value>add</value>
+                <value>update</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--切面aspect=切点+通知-->
+    <bean id="orderServiceAspect" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="advice" ref="orderServiceAdvice"/>
+        <property name="pointcut" ref="orderServicePointCut"/>
+    </bean>
+
+    <bean id="orderServicePoxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="orderService"/>
+        <property name="interceptorNames">
+            <list>
+                <value>orderServiceAspect</value>
+            </list>
+        </property>
+        <property name="proxyInterfaces" value="com.daishaowen.test.aop.chuantongaop.IorderService"/>
+    </bean>
+</beans>

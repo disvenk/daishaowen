@@ -1,0 +1,285 @@
+server:
+  port: ${ports}
+  servlet:
+    context-path: /${path}
+    session:
+      cookie:
+        domain: pages.com #可以在这里设置，也可以在过滤器哪里设置
+        path: /
+#        http-only: false
+  #address: 192.168.1.130 #指定server绑定的地址,除了这个地址其它无法访问
+  #compression:
+   # enabled: false #是否开启压缩，默认为false.
+    #excluded-user-agents: #指定不压缩的user-agent，多个以逗号分隔，默认值为:text/html,text/xml,text/plain,text/css
+    #mime-types: #指定要压缩的MIME type，多个以逗号分隔.
+    #min-response-size: #执行压缩的阈值，默认为2048
+  #context-parameters: #Servlet上下文初始化参数,例如server.context-parameters.a = alpha
+  #servlet-path: #设定dispatcher servlet的监听路径，默认为: /
+  #display-name: #设定应用的展示名称，默认: application
+  #jsp-servlet:
+    #class-name: #设定编译JSP用的servlet，默认: org.apache.jasper.servlet.JspServlet)
+    #init-parameters: #设置JSP servlet 初始化参数.
+    #registered: #设定JSP servlet是否注册到内嵌的servlet容器，默认true
+
+#  session:
+#    cookie:
+#      comment: #指定session cookie的comment,会话cookie的注释。
+#      domain: #会话cookie的域
+#      http-only: #“HttpOnly”会话cookie的标志
+#      max-age: #会话cookie的最大年龄（以秒为单位
+#      name: #会话cookie名称
+#      path: #会话cookie的路径
+#      secure: #“安全”标志为会话cookie
+#    persistent: #重启时是否持久化session，默认false
+#    store-dir: #用于存储会话数据的目录
+#    timeout: #session的超时时间（秒）
+#    tracking-modes: #设定Session的追踪模式(cookie, url, ssl).
+
+#  ssl:
+#    ciphers: #是否支持SSL ciphers.
+#    client-auth: #是否是想客户认证（“想要”）或需要（“需要”）需要信任存储,设定client authentication是wanted 还是 needed.
+#    enabled: #是否开启ssl，默认: true
+#    key-alias: #标识密钥存储区中的密钥的别名,设定key store中key的别名.
+#    key-password: #用于访问密钥存储区中的密钥的密码,访问key store中key的密码.
+#    key-store: #SSL证书的密钥存储路径（通常是 jks 文件）
+#    key-store-password: #用于访问密钥库的密码,设定访问key store的密码
+#    key-store-provider: #密钥存储的提供者,设定key store的提供者.
+#    key-store-type: #密钥存储的类型,设定key store的类型
+#    protocol: #使用的SSL协议，默认: TLS
+#    trust-store: #保存SSL证书的Trust存储
+#    trust-store-password: #访问trust store的密码
+#    trust-store-provider: #设定trust store的提供者
+#    trust-store-type: #指定trust store的类型
+
+#  tomcat:
+#    accesslog:
+#      enabled: false #是否开启access log ，默认: false)
+#      pattern: common #设定access logs的格式，默认: common
+#      directory: F:/temps #设定log的目录，默认: logs
+#      prefix: springboot-disvenk-log #设定Log 文件的前缀，默认: access_log
+#      suffix: .log #设定Log 文件的后缀，默认: .log
+#    background-processor-delay: 30 #在调用backgroundProcess方法之间以秒为单位的延迟,后台线程方法的Delay大小: 30
+#    basedir: #设定Tomcat的base 目录，如果没有指定则使用临时目录
+#    internal-proxies: #设定信任的ip正则表达式，默认:“10\.\d{1,3}\.\d{1,3}\.\d{1,3}| 192\.168\.\d{1,3}\.\d{1,3}| 169\.254\.\d{1,3}\.\d{1,3}| 127\.\d{1,3}\.\d{1,3}\.\d{1,3}| 172\.1[6-9]{1}\.\d{1,3}\.\d{1,3}| 172\.2[0-9]{1}\.\d{1,3}\.\d{1,3}|172\.3[0-1]{1}\.\d{1,3}\.\d{1,3}”
+#    max-http-post-size: #post最大传送字节
+#    max-http-header-size: #设定http header的最小值，默认: 0
+#    max-threads: 500 #设定tomcat的最大工作线程数，默认为: 0
+#    min-spare-threads: 500 #设定tomcat的最小工作线程数，默认为: 0
+#    max-connections: 2000 #服务器在任何给定时间接受和处理的最大连接数
+#    port-header: #设定http header使用的，用来覆盖原来port的value
+#    protocol-header: #设定Header包含的协议，通常是 X-Forwarded-Proto，如果remoteIpHeader有值，则将设置为RemoteIpValve
+#    protocol-header-https-value: #设定使用SSL的header的值，默认https
+#    remote-ip-header: #设定remote IP的header，如果remoteIpHeader有值，则设置为RemoteIpValve
+#    uri-encoding: #设定URI的解码字符集
+
+
+#---------------------配置数据源 start---------------
+#使用druid数据源
+druid:
+  jdbc:
+    type: com.alibaba.druid.pool.DruidDataSource
+#    url: jdbc:mysql://rm-uf68wwy6152b6493dho.mysql.rds.aliyuncs.com:3306/retrench_brand?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://192.168.0.120:3306/log_analysis?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+#    password: Canjia2017
+    driverClassName: com.mysql.jdbc.Driver
+#连接池的配置信息
+    initialSize: 5 #管道初始化大小
+    minIdle: 5 #最小空闲连接
+    #maxIdle: 5 #最大空闲连接,过期属性已被maxActive代替
+    maxActive: 10 #最大管道数
+    maxWait: 60000 #管道连接超时时间
+#配置多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+#配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+# 校验SQL，Oracle配置 spring.datasource.validationQuery=SELECT 1 FROM DUAL，如果不配validationQuery项，则下面三项配置无用
+#验证连接是否有效。此参数必须设置为非空字符串，下面三项设置成true才能生效
+    validationQuery: SELECT 1 from dual
+    testWhileIdle: true #指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除
+    testOnBorrow: false #指明是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个
+    testOnReturn: false #指明是否在归还到池中前进行检验
+#打开PSCache,别且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+#配置监控统计的filters，去掉后监控界面无法sql无法统计，‘wall’用于防火墙
+    filters: stat,wall,log4j
+#通过connectionProperties属性来打开mergeSql功能，慢SQL记录
+    connectionProperties: druid.stat.mergeSql:true;druid.stat.slowSqlMillis:5000;druid.stat.logSlowSql:true
+# 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+#---------------------配置数据源 end-----------------
+
+#使用吊炸天数据源
+hikaricp:
+  jdbc:
+    driverClassName: com.mysql.jdbc.Driver
+    #driverClassName: com.p6spy.engine.spy.P6SpyDriver
+    #url: jdbc:mysql://localhost:3306/yepao?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://192.168.0.120:3306/test?useUnicode=true&characterEncoding=utf8
+    username: zxsaas
+    password: zxsaas
+    filters: stat
+    maxActive: 100
+    initialSize: 1
+    maxWait: 15000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 30000
+    minEvictableIdleTimeMillis: 180000
+    validationQuery: SELECT 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    removeAbandoned: true
+    removeAbandonedTimeout: 600
+    logAbandoned: false
+    connectionInitSqls:
+
+springs:
+#------------------配置redis集群 start-------------------
+#  redis:
+#    database: 1 #redis数据库索引(默认为0)
+#    #host: 47.104.19.44 #redis服务器地址
+#    #port: 6379 #redis服务器端口
+#    password: 123 #密码
+#    cluster:
+#      nodes: 47.104.19.44:7000,47.104.19.44:7001,47.104.19.44:7002,47.104.19.44:7003,47.104.19.44:7004,47.104.19.44:7005
+#    pool:
+#      max-active: 1000 # 连接池最大连接数（使用负值表示没有限制）
+#      max-wait: 5000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+#      max-idle: 10 # 连接池中的最大空闲连接
+#      min-idle: 7 # 连接池中的最小空闲连接
+#    timeout: 5000 # 连接超时时间（毫秒）
+#    commandTimeout: 5000
+#    maxAttempts: 10000 #重试时间
+
+#------------------配置redis集群 end---------------------
+
+#开放所有监控接口权限
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+spring:
+#  aop:
+#    proxy-target-class: false #是否开启CGLIB动态代理
+
+#---------------监控start---------
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:8088
+#---------------监控end---------
+
+#------------------二级缓存start---------------------
+  #cache:
+   # ehcache:
+    #  rabbitmqConfig: ecache.xml
+#-------------------二级缓存end-----------------------
+
+#------------------模板引擎 start--------------------
+#模板引擎配置路径
+  thymeleaf:
+    cache: false #关闭缓存及时刷新
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+#--------------------模板引擎 end--------------------
+
+#-------------------配置支持热部署 start------------------
+#如果想以保存就热加载，则注释下面的配置，如果想通过触发文件来统一热加载即放开下面的配置
+  devtools:
+    restart:
+      exclude: static/**,templates/** #排除这些项目里的文件在重新编译后无需重启，但是效果还是有的
+      enabled: true #热部署生效
+      additional-paths: src/main/java #设置重启的目录，添加哪个目录的文件需要restart
+      #additional-exclude: 排除上面两个默认路径之外的自己设置的路径
+      trigger-file: trigger.file
+#---------------------配置支持热部署 start-------------------
+
+#----------------------rabbitmq start---------------
+#  rabbitmq:
+#    host: 192.168.211.128
+#    port: 5672
+#    username: admin
+#    password: admin
+#    publisher-confirms: true #消息回调
+#    publisher-returns: true #失败回调
+#    template:
+#      mandatory: true #启动强制消息
+#    virtual-host: /
+#    listener:
+#      simple:
+#        acknowledge-mode: auto #手动确认manual,设置成手动后，必须手动确认消息
+#        retry:
+#          multiplier: 2.0 #第一次等1秒，第二次等2秒，第三次4秒
+#          max-attempts: 5 #最大重试次数
+#          enabled: true #是否开启消费者重试（为false时关闭消费者重试，这时消费端代码异常会一直重复收到消息）
+#          initial-interval: 3000 #重试间隔时间（单位毫秒）,此处表示10秒，2.0以后改变了
+#        default-requeue-rejected: true # 如果消费失败，重新将数据压入队列,重试次数超过上面的设置之后是否丢弃（false不丢弃时需要写相应代码将该消息加入死信队列）
+#        prefetch: 10000 #指定一个请求能处理多少个消息，如果有事务的话，必须大于等于transaction数量
+#        transaction-size: 10000 #指定一个事务处理的消息数量，最好是小于等于prefetch的数量.
+#        concurrency: 10 #消费者最小的数量
+#        max-concurrency: 10 #消费者最大数量
+#----------------------rabbitmq end-----------------
+
+#------------------配置redis start-------------------
+  redis:
+    database: 0
+    host: 192.168.0.201
+    port: 6379
+    password: office201RedisPassword
+    lettuce:
+      pool:
+        max-active: 1000 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 5000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10 # 连接池中的最大空闲连接
+        min-idle: 7 # 连接池中的最小空闲连接
+    timeout: 5000 # 连接超时时间（毫秒）
+    commandTimeout: 5000
+    maxAttempts: 10000 #重试时间
+
+#------------------配置redis end-------------------
+
+#---------------------配置mybatis及其分页插件 start----------------
+#mybatisPlugin:
+#  type-aliases-package: com.daishaowen.test.model
+  #config-location=classpath: mybatisPlugin-rabbitmqConfig.xml
+#  mapperLocations: classpath:com/daishaowen/test/com.daishaowen.test.mapper/*.xml
+
+#pagehelper:
+ #   helperDialect: mysql
+  #  reasonable: true参数是否合理化处理
+   # supportMethodsArguments: true
+    #params: count=countSql
+#--------------------- 配置mybatis及其分页插件 end----------------
+
+#----------------------配置日志--------------------------
+logging:
+  file: /disvenk1/log
+  level:
+    #org:
+     # springframework:
+      #  web: warn
+    #hibernate: error
+    #com.daishaowen.test: info #这个是指定某个包下使用什么等级的
+    root: #这个是指定根目录下所有的类都是用指定的等级
+    #cn.piesat.com.daishaowen.test.mapper: debug #mybatis的mapper包
+  #pattern: #可以使用此参数指定log输出的格式
+
+rpc:
+  registry_address: 192.168.0.121:2181
+dubbos:
+  provider:
+    timeOut: 60000
+    retries: 0
+  brand:
+    port: 20880
+

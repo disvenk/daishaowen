@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Base logback configuration provided for compatibility with Spring Boot 1.1
+-->
+<configuration>
+    <!--使用默认配置，默认文件提供了大量丰富的配置-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!--使用默认的控制台输出格式-->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <!-- ConsoleAppender 控制台输出日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- 对日志进行格式化 -->
+    <encoder>
+        <!--<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger -%msg%n</pattern>-->
+        <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%thread]){faint} %clr(%-40.40logger{39}){cyan} %L %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
+        <!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
+    </encoder>
+    </appender>
+
+    <!--RollingFileAppender 滚动文件输出，意为从上往下；一个大的appender可以配置一个级别的日志-->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--此参数为默认格式，如果不想使用默认的格式，可以通过参数pattern设置格式-->
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <!--<pattern>%d{HH:mm:ss.SSS} %thread %X{invokeNo} %logger{40} %msg%n</pattern>-->
+        </encoder>
+
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">&lt;!&ndash; 只打印错误日志 &ndash;&gt;-->
+            <!--<level>ERROR</level>-->
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
+
+        <!--如果存在文件则会读取在yml文件中file参数下配置的文件，没有则会读取后面指定的路径下的文件-->
+        <file>${LOG_FILE:-/tmp/loc.log}</file>
+
+        <!--滚动策略，按时间、按大小等-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--定义文件名的格式控制到什么级别，时分秒,当时间到了下一个阶段了就需要生成下一个阶段的文件名，就是按时间变化来切割-->
+            <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd_HH-mm-ss}.log</fileNamePattern>
+            <!--保存天数-->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!--输出到mysql数据库的appender配置     -->
+    <!--<appender name="db" class="ch.qos.logback.classic.db.DBAppender">-->
+    <!--<connectionSource-->
+            <!--class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
+        <!--<driverClass>com.mysql.jdbc.Driver</driverClass>-->
+        <!--<url>jdbc:mysql://120.77.222.42:3306/logback_member?characterEncoding=utf8</url>-->
+        <!--<user>root</user>-->
+        <!--<password>a123456789</password>-->
+    <!--</connectionSource>-->
+    <!--</appender>-->
+
+    <!--将日志发送到远程的中间件kafka,rsyslog,flume大数据的分析-->
+    <!--appender将日志主要是输出在console(std-out、std-error),file,rsyslog这三个途径-->
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <!--<appender-ref ref="db"/>-->
+        <!-- 控制台输出 -->
+        <!--<appender-ref ref="STDOUT" />-->
+        <!--<!– 文件输出 –>-->
+        <!--<appender-ref ref="ERROR" />-->
+        <!--<appender-ref ref="INFO" />-->
+        <!--<appender-ref ref="WARN" />-->
+        <!--<appender-ref ref="DEBUG" />-->
+        <!--<appender-ref ref="TRACE" />-->
+
+    </root>
+
+
+</configuration>
+
