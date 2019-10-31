@@ -80,6 +80,7 @@ druid:
     type: com.alibaba.druid.pool.DruidDataSource
 #    url: jdbc:mysql://rm-uf68wwy6152b6493dho.mysql.rds.aliyuncs.com:3306/retrench_brand?useUnicode=true&characterEncoding=utf8
     url: jdbc:mysql://192.168.0.120:3306/log_analysis?useUnicode=true&characterEncoding=utf8
+#    url: jdbc:mysql://localhost:3306/books?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
 #    password: Canjia2017
@@ -263,7 +264,7 @@ spring:
 
 #----------------------配置日志--------------------------
 logging:
-  file: /disvenk1/log
+  #file: /disvenk1/log
   level:
     #org:
      # springframework:
@@ -274,12 +275,14 @@ logging:
     #cn.piesat.com.daishaowen.test.mapper: debug #mybatis的mapper包
   #pattern: #可以使用此参数指定log输出的格式
 
-rpc:
-  registry_address: 192.168.0.121:2181
-dubbos:
-  provider:
-    timeOut: 60000
-    retries: 0
-  brand:
-    port: 20880
+rocketmq: # 生产者配置
+  producer:
+    groupName: ${spring.application.name} #消费者组名
+    namesrvAddr: 192.168.40.133:9876 #NameServer地址
+    default: false
+  consumer:
+    groupName: ${spring.application.name}
+    namesrvAddr: 192.168.40.133:9876
+
+
 

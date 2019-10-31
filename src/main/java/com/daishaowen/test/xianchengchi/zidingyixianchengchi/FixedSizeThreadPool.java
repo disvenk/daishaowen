@@ -22,10 +22,14 @@ public class FixedSizeThreadPool {
         @Override
         public void run() {
             //不断的从队列中拿任务出来
-            while(true){
+            while(this.pool.isWorking || this.pool.blockingQueue.size()>0){
                 Runnable task=null;
                 try{
-                    task=this.pool.blockingQueue.take();
+                    if(this.pool.isWorking){
+                        task=this.pool.blockingQueue.take();
+                    }else {
+                        task=this.pool.blockingQueue.poll();
+                    }
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
@@ -51,10 +55,28 @@ public class FixedSizeThreadPool {
     }
 
     public boolean submit(Runnable task){
-        return this.blockingQueue.offer(task);
+        if(isWorking){
+            return this.blockingQueue.offer(task);
+        }else {
+            return false;
+        }
     }
 
-    //ddd
+    //关闭的方法
+    //要去干什么
+    //1.停止让客人进来排队
+    //2.看仓库，如果还有任务就执行完
+    //3.去仓库中拿任务，就不应该阻塞
+    //4.一旦任务阻塞了，就必须要中断
+    private volatile boolean isWorking=true;
+    public void shutDown(){
+        this.isWorking=false;
+        for(Thread thread:workers){
+            if(Thread.State.BLOCKED.equals(thread.getState())){
+                thread.interrupt();//中断线程
+            }
+        }
+    }
 
     public static void main(String[] args) {
         FixedSizeThreadPool pool = new FixedSizeThreadPool(3,3);

@@ -43,7 +43,7 @@ public class DruidDataSourceConfig {
 	@Bean("dataSource1")
 	public DataSource dataSource1(){
 		DruidDataSource druidDataSource = new DruidDataSource();
-		druidDataSource.setUrl("jdbc:mysql://192.168.0.120:3306/disvenk1?useUnicode=true&characterEncoding=utf8");
+		druidDataSource.setUrl(datasource.getUrl());
 		druidDataSource.setUsername(datasource.getUsername());
 		druidDataSource.setPassword(datasource.getPassword());
 		druidDataSource.setDriverClassName(datasource.getDriverClassName());
@@ -76,7 +76,7 @@ public class DruidDataSourceConfig {
 	@Bean("dataSource2")
 	public DataSource dataSource2(){
 		DruidDataSource druidDataSource = new DruidDataSource();
-		druidDataSource.setUrl("jdbc:mysql://192.168.0.120:3306/disvenk2?useUnicode=true&characterEncoding=utf8");
+		druidDataSource.setUrl(datasource.getUrl());
 		druidDataSource.setUsername(datasource.getUsername());
 		druidDataSource.setPassword(datasource.getPassword());
 		druidDataSource.setDriverClassName(datasource.getDriverClassName());
@@ -135,13 +135,13 @@ public class DruidDataSourceConfig {
 	 * @author Chris li[黎超]
 	 * @version [版本, 2017-04-12]
 	 */
-	@Bean
-	public BeanNameAutoProxyCreator dataSourceLog4jdbcAutoProxyCreator() {
-		BeanNameAutoProxyCreator creator = new BeanNameAutoProxyCreator();
-		creator.setInterceptorNames("log4jdbcInterceptor");
-		creator.setBeanNames("dataSource1","dataSource2");
-		return creator;
-	}
+//	@Bean
+//	public BeanNameAutoProxyCreator dataSourceLog4jdbcAutoProxyCreator() {
+//		BeanNameAutoProxyCreator creator = new BeanNameAutoProxyCreator();
+//		creator.setInterceptorNames("log4jdbcInterceptor");
+//		creator.setBeanNames("dataSource1","dataSource2");
+//		return creator;
+//	}
 
 //	 mybatis文件配置，扫描所有mapper文件
 //	<bean id="sqlSessionFactory" class="org.mybatisPlugin.spring.SqlSessionFactoryBean"

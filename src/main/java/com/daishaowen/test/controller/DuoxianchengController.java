@@ -85,4 +85,13 @@ public class DuoxianchengController {
         Thread.sleep(1500);
         return list;
     }
+
+    //使用spring提供的callable
+    @RequestMapping("sync")
+    public Callable<String> sync(){
+        Callable<String> callable =()->{
+          return findAll().toString();
+        };
+        return callable;
+    }
 }
