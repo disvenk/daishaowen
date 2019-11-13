@@ -60,15 +60,15 @@ public class DuoxianchengController {
         FutureTask<List<String>> fb = new FutureTask<List<String>>(b);
 
         Future<?> submit = fixedThreadPool.submit(fa);
-        fixedThreadPool.submit(fb);
+        //fixedThreadPool.submit(fb);
        new Thread(fa).start();
-//        new Thread(fb).start();
+        new Thread(fb).start();
         System.out.println(fa.get());
         System.out.println(fb.get());
         System.out.println("先执行打印");
-//        map.put("a",fa.get() );
-//
-//        map.put("b",fb.get() );
+        map.put("a",fa.get() );
+
+        map.put("b",fb.get() );
         return map;
     }
 
@@ -89,9 +89,13 @@ public class DuoxianchengController {
     //使用spring提供的callable
     @RequestMapping("sync")
     public Callable<String> sync(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         Callable<String> callable =()->{
-          return findAll().toString();
+            return findAll().toString();
         };
+        stopWatch.stop();
+        System.out.println("耗时"+stopWatch.getTime());
         return callable;
     }
 }
