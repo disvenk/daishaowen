@@ -23,7 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<log4j.version>2.4.1</log4j.version>
-		<mysql.java>5.1.29</mysql.java>
+		<mysql.java>8.0.16</mysql.java>
 		<lucene.version>4.10.3</lucene.version>
 	</properties>
 
